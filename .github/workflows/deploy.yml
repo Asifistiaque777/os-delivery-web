@@ -15,7 +15,7 @@ jobs:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      # ২. নোড সেটআপ
+      # ②. নোড সেটআপ
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -29,13 +29,13 @@ jobs:
         run: |
           echo "$SECRET_ENV_DATA" > .env
 
-      # ── 🚨 ৪. ফিক্সড স্টেপ: ডিরেক্টলি npx vite build রান করা ──
+      # ── 🚨 ৪. ফিক্সড স্টেপ: এখন স্ক্রিপ্ট থেকে পারফেক্টলি বিল্ড হবে ──
       - name: 🏗️ Install & Build inside osdel-project
         working-directory: ./osdel-project
         run: |
           npm cache clean --force
           npm install
-          npx vite build
+          npm run build
 
       # ৫. তৈরি হওয়া বিল্ড ফাইলগুলো FTP-তে পুশ করা
       - name: 📂 Sync files via FTP
