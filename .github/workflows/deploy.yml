@@ -16,33 +16,34 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
 
       - name: 🔍 Debug project structure
         run: |
           pwd
-          ls -R
+          ls
 
       - name: 🔑 Create .env
-        working-directory: ./osdel-project
-        env:
-          SECRET_ENV_DATA: ${{ secrets.ENV_FILE }}
         run: |
-          echo "$SECRET_ENV_DATA" > .env
+          echo "${{ secrets.ENV_FILE }}" > osdel-project/.env
 
-      - name: 🔍 Debug package.json
-        working-directory: ./osdel-project
+      - name: 🔍 Debug osdel-project
         run: |
+          cd osdel-project
+          pwd
+          ls -la
           cat package.json
           npm run
 
       - name: 🏗️ Install dependencies
-        working-directory: ./osdel-project
-        run: npm ci
+        run: |
+          cd osdel-project
+          npm ci
 
       - name: 🏗️ Build project
-        working-directory: ./osdel-project
-        run: npm run build
+        run: |
+          cd osdel-project
+          npm run build
 
       - name: 📂 Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
