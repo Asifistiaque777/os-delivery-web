@@ -7,38 +7,44 @@ on:
 
 jobs:
   web-deploy:
-    name: 🎉 Production Build and FTP Upload
     runs-on: ubuntu-latest
 
     steps:
-      # ১. কোড নামানো হচ্ছে
-      - name: 🚚 Get latest code
+      - name: 🚚 Checkout
         uses: actions/checkout@v4
 
-      # ②. নোড সেটআপ
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # ৩. osdel-project ফোল্ডারের ভেতর .env ফাইল তৈরি
-      - name: 🔑 Make CI .env file
+      - name: 🔍 Debug project structure
+        run: |
+          pwd
+          ls -R
+
+      - name: 🔑 Create .env
         working-directory: ./osdel-project
         env:
           SECRET_ENV_DATA: ${{ secrets.ENV_FILE }}
         run: |
           echo "$SECRET_ENV_DATA" > .env
 
-      # ── 🚨 ৪. ফিক্সড স্টেপ: এখন স্ক্রিপ্ট থেকে পারফেক্টলি বিল্ড হবে ──
-      - name: 🏗️ Install & Build inside osdel-project
+      - name: 🔍 Debug package.json
         working-directory: ./osdel-project
         run: |
-          npm cache clean --force
-          npm install
-          npm run build
+          cat package.json
+          npm run
 
-      # ৫. তৈরি হওয়া বিল্ড ফাইলগুলো FTP-তে পুশ করা
-      - name: 📂 Sync files via FTP
+      - name: 🏗️ Install dependencies
+        working-directory: ./osdel-project
+        run: npm ci
+
+      - name: 🏗️ Build project
+        working-directory: ./osdel-project
+        run: npm run build
+
+      - name: 📂 Upload via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
