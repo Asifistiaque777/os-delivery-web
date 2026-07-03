@@ -21,7 +21,7 @@ jobs:
         with:
           node-version: 20
 
-      # ── 🚨 ৩. ফিক্সড স্টেপ: osdel-project ফোল্ডারের ভেতর সেফলি ঢুকে .env ফাইল তৈরি ──
+      # ৩. osdel-project ফোল্ডারের ভেতর .env ফাইল তৈরি
       - name: 🔑 Make CI .env file
         working-directory: ./osdel-project
         env:
@@ -29,13 +29,13 @@ jobs:
         run: |
           echo "$SECRET_ENV_DATA" > .env
 
-      # ৪. সাব-ফোল্ডারের ভেতরেই ফ্রেশ ডিপেন্ডেন্সি ইনস্টল ও বিল্ড তৈরি
+      # ── 🚨 ৪. ফিক্সড স্টেপ: ডিরেক্টলি npx vite build রান করা ──
       - name: 🏗️ Install & Build inside osdel-project
         working-directory: ./osdel-project
         run: |
           npm cache clean --force
           npm install
-          npm run build
+          npx vite build
 
       # ৫. তৈরি হওয়া বিল্ড ফাইলগুলো FTP-তে পুশ করা
       - name: 📂 Sync files via FTP
