@@ -7,50 +7,46 @@ on:
 
 jobs:
   web-deploy:
+    name: 🎉 Production Build and FTP Upload
     runs-on: ubuntu-latest
 
     steps:
-      - name: 🚚 Checkout
+      # ১. কোড নামানো হচ্ছে
+      - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
+      # ২. নোড সেটআপ (লেটেস্ট নোড ২৪ ব্যবহার করা হলো)
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 24
 
-      - name: 🔍 Debug project structure
+      # ৩. ফিক্সড স্টেপ: সেফলি এনভায়রনমেন্ট ভ্যারিয়েবল দিয়ে .env ফাইল তৈরি
+      - name: 🔑 Make CI .env file
+        working-directory: ./osdel-project
+        env:
+          SECRET_ENV_DATA: ${{ secrets.ENV_FILE }}
         run: |
-          pwd
-          ls
+          echo "$SECRET_ENV_DATA" > .env
 
-      - name: 🔑 Create .env
+      # ৪. সাব-فোল্ডারে ঢুকে ফ্রেশ ডিপেন্ডেন্সি ইনস্টল ও বিল্ড তৈরি
+      - name: 🏗️ Install & Build inside osdel-project
+        working-directory: ./osdel-project
         run: |
-          echo "${{ secrets.ENV_FILE }}" > osdel-project/.env
-
-      - name: 🔍 Debug osdel-project
-        run: |
-          cd osdel-project
-          pwd
-          ls -la
-          cat package.json
-          npm run
-
-      - name: 🏗️ Install dependencies
-        run: |
-          cd osdel-project
+          npm cache clean --force
           npm ci
-
-      - name: 🏗️ Build project
-        run: |
-          cd osdel-project
           npm run build
 
-      - name: 📂 Upload via FTP
+      # ── 🚨 ৫. ফাইনাল ফিক্সড স্টেপ: টাইমআউট, পোর্ট ও প্যাসিভ মোড অন করে FTP পুশ ──
+      - name: 📂 Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          port: 21 # অফিশিয়াল এফটিপি পোর্ট ফিক্সড করা হলো
+          protocol: ftp
           local-dir: ./osdel-project/dist/
           server-dir: /
           dangerous-clean-slate: false
+          timeout: 600000 # টাইমআউট ১০ মিনিট পর্যন্ত বাড়ানো হলো যাতে cPanel কানেকশন কেটে না দেয়
