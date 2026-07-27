@@ -7,23 +7,18 @@ on:
 
 jobs:
   web-deploy:
-    name: 🎉 Production Build and FTP Upload
+    name: 🎉 Production Build and SSH Deploy
     runs-on: ubuntu-latest
 
     steps:
-      # ১. কোড নামানো
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      # ২. Node.js সেটআপ
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-        env:
-          ACTIONS_ALLOW_USE_INSECURE_NODE_VERSION: true
 
-      # ৩. .env ফাইল তৈরি
       - name: 🔑 Make CI .env file
         working-directory: ./osdel-project
         env:
@@ -31,25 +26,22 @@ jobs:
         run: |
           echo "$SECRET_ENV_DATA" > .env
 
-      # ৪. Install & Build
       - name: 🏗️ Install & Build
         working-directory: ./osdel-project
         run: |
           npm ci
           npm run build
 
-      # ৫. FTP Upload — FTPS + passive mode fix
-      - name: 📂 Sync files via FTP
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_SERVER }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: ./osdel-project/dist/
-          server-dir: /public_html/
-          protocol: ftps
-          port: 21
-          security: loose
-          dangerous-clean-slate: false
-          timeout: 60000
-          log-level: verbose
+      - name: 🔐 Setup SSH Key
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
+
+      - name: 📂 Deploy via rsync
+        run: |
+          rsync -avz --delete \
+            -e "ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no -p 22" \
+            ./osdel-project/dist/ \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:public_html/
