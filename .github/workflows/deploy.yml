@@ -20,6 +20,8 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+        env:
+          ACTIONS_ALLOW_USE_INSECURE_NODE_VERSION: true
 
       # ৩. .env ফাইল তৈরি
       - name: 🔑 Make CI .env file
@@ -36,7 +38,7 @@ jobs:
           npm ci
           npm run build
 
-      # ৫. FTP Upload — SamKirkland (সঠিক নাম)
+      # ৫. FTP Upload — FTPS + passive mode fix
       - name: 📂 Sync files via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
@@ -45,4 +47,9 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./osdel-project/dist/
           server-dir: /public_html/
+          protocol: ftps
+          port: 21
+          security: loose
           dangerous-clean-slate: false
+          timeout: 60000
+          log-level: verbose
