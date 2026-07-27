@@ -11,17 +11,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # ১. কোড নামানো হচ্ছে
+      # ১. কোড নামানো
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
 
-      # ২. নোড সেটআপ
+      # ২. Node.js সেটআপ
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      # ৩. osdel-project ফোল্ডারের ভেতর .env ফাইল তৈরি
+      # ৩. .env ফাইল তৈরি
       - name: 🔑 Make CI .env file
         working-directory: ./osdel-project
         env:
@@ -29,19 +29,20 @@ jobs:
         run: |
           echo "$SECRET_ENV_DATA" > .env
 
-      # ৪. প্রজেক্ট বিল্ড করা
-      - name: 🏗️ Install & Build inside osdel-project
+      # ৪. Install & Build
+      - name: 🏗️ Install & Build
         working-directory: ./osdel-project
         run: |
           npm ci
           npm run build
 
-      # 📂 ৫. FTP দিয়ে সরাসরি public_html-এ বিল্ড ফাইল আপলোড
+      # ৫. FTP Upload — SamKirkland (সঠিক নাম)
       - name: 📂 Sync files via FTP
-        uses: SamKirsch/ftp-deploy-action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./osdel-project/dist/
-          server-dir: ./
+          server-dir: /public_html/
+          dangerous-clean-slate: false
