@@ -19,7 +19,7 @@ jobs:
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 24
+          node-version: 20
 
       # ৩. osdel-project ফোল্ডারের ভেতর .env ফাইল তৈরি
       - name: 🔑 Make CI .env file
@@ -33,16 +33,15 @@ jobs:
       - name: 🏗️ Install & Build inside osdel-project
         working-directory: ./osdel-project
         run: |
-          npm cache clean --force
           npm ci
           npm run build
 
-      # ── 🚨 ৫. আলটিমেট ফিক্স: একদম ভিন্ন এবং সুপার-ফাস্ট FTP অ্যাকশন প্লাগইন ব্যবহার ──
-      - name: 📂 Sync files via FTP (Timeout Proof)
-        uses: AfonsoMatos/FTP-Deploy-Action@v1.2.0
+      # ── 📂 ৫. FTP দিয়ে ডিরেক্ট বিল্ড ফাইল আপলোড ──
+      - name: 📂 Sync files via FTP
+        uses: SamKirsch/ftp-deploy-action@v4.3.5
         with:
-          ftp-server: ${{ secrets.FTP_SERVER }}
-          ftp-username: ${{ secrets.FTP_USERNAME }}
-          ftp-password: ${{ secrets.FTP_PASSWORD }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./osdel-project/dist/
-          server-dir: /
+          server-dir: ./
