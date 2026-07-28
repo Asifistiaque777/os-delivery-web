@@ -85,12 +85,12 @@ const buildHash = (page, category, subCategory) => {
     MAIN APP
 ══════════════════════════════════════════ */
 const App = () => {
-  const [page, setPage]         = useState("Home");
-  const [cart, setCart]         = useState([]);
-  const [showCart, setShowCart] = useState(false);
-  const [alert, setAlert]       = useState({ message: "", type: "" });
-  const [isAdmin, setIsAdmin]   = useState(false);
-  const [isRider, setIsRider]   = useState(false);
+  const [page, setPage]                 = useState("Home");
+  const [cart, setCart]                 = useState([]);
+  const [showCart, setShowCart]         = useState(false);
+  const [alert, setAlert]               = useState({ message: "", type: "" });
+  const [isAdmin, setIsAdmin]           = useState(false);
+  const [isRider, setIsRider]           = useState(false);
   const [gradientClass, setGradientClass]             = useState(getGradientClass());
   const [activeCategory, setActiveCategory]           = useState(CATEGORIES[0]?.name || "");
   const [activeSubCategory, setActiveSubCategory]     = useState("");
@@ -109,6 +109,15 @@ const App = () => {
   } = useFirebase(setAlert);
 
   const authData = useAuth();
+
+  /* ── Google Analytics Hash Tracking ── */
+  useEffect(() => {
+    if (window.gtag) {
+      window.gtag("config", "G-0QT0GT9C1B", {
+        page_path: window.location.pathname + window.location.hash,
+      });
+    }
+  }, [page]);
 
   /* ── changePage ── */
   const changePage = useCallback((newPage, catOverride, subOverride) => {
@@ -341,7 +350,7 @@ const App = () => {
             setIsAuthenticated={(status) => {
               setIsRider(status);
               if (!status) {
-                // 🚪 লগআউট মারলে স্টেট রুট লেভেল থেকে ধুয়েমুছে ক্লিন করবে এবং ওল্ড সেশন রিলিজ করবে
+                // 🚪 লগআউট মারলে স্টেট রুট লেভেল থেকে ধুয়েমুছে ক্লিন করবে এবং ওল্ড সেশন রিলিজ করবে
                 setIsAdmin(false);
                 window.location.reload(); 
               }
