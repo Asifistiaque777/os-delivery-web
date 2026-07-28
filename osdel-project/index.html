@@ -5,14 +5,31 @@
     <link rel="icon" type="image/png" href="/osdel_favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- 📊 Google Analytics Tag (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0QT0GT9C1B"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-0QT0GT9C1B');
+    </script>
+
     <!-- 🔑 Google Search Console Verification Tag -->
-    <meta name="google-site-verification" content="zSznxmPU1SgbrAG72K4aRxK7gfcZzfKGd_YCuqNYF-c" />
+    <meta name="google-site-verification" content="zSznxmPU1SgbrAG72K4aRxK..." />
 
     <!-- 🔍 Basic SEO Meta Tags -->
     <title>OS Rush | Online Food, Medicine & Essential Delivery Service</title>
-    <meta name="description" content="Order fresh food, daily groceries, medicines, and essential items online with super-fast delivery from OS Rush." />
+    <meta name="description" content="Order fresh food, daily groceries & essential medicine online with super-fast delivery from OS Rush." />
+    <meta name="keywords" content="food delivery, late night food, grocery delivery, medicine delivery, OS Rush, OSDelivery" />
+
+    <!-- 🌐 Open Graph / Social Media Preview Meta Tags -->
+    <meta property="og:title" content="OS Rush - Fast Food & Essentials Delivery" />
+    <meta property="og:description" content="Order fresh food, late night meals & essential medicine online with instant delivery!" />
+    <meta property="og:image" content="https://osrush.com/osdel_favicon.png" />
+    <meta property="og:url" content="https://osrush.com" />
   </head>
-  <body class="bg-gray-900 text-white"> 
+  <body class="bg-gray-900 text-white">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
