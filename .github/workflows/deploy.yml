@@ -46,4 +46,4 @@ jobs:
             -o StrictHostKeyChecking=no \
             -o ServerAliveInterval=30 \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "cd public_html && tar xzf -"
+            "cd ~/public_html && tar xzf - --overwrite"
