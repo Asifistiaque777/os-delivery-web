@@ -1,4 +1,3 @@
-
 name: 🚀 Build & Deploy to Pipra Host
  
 on:
@@ -40,15 +39,25 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p 22 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
  
-      - name: 🗑️ Clear old assets on server
+      - name: 📦 Zip the build
+        run: |
+          cd ./osdel-project/dist
+          zip -r /tmp/build.zip .
+ 
+      - name: 📤 Upload zip via SCP
+        run: |
+          scp -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            /tmp/build.zip \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/build.zip
+ 
+      - name: 📂 Extract on server
         run: |
           ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "rm -rf ~/public_html/assets && echo 'old assets cleared'"
- 
-      - name: 📂 Upload new build via SSH tar pipe
-        run: |
-          cd ./osdel-project/dist
-          tar czf - . | ssh -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} << 'EOF'
+          rm -rf ~/public_html/assets
+          cd ~/public_html
+          unzip -o ~/build.zip
+          rm ~/build.zip
+          echo "✅ Deploy complete!"
