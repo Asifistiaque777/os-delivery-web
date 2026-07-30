@@ -91,7 +91,7 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
       >
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <div className="flex flex-col cursor-pointer" onClick={() => setPage('Home')}>
-            <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter leading-none">Oriental Street - OSrush</h1>
+            <h1 className="text-2xl md:text-3xl font-black text-gray-900 tracking-tighter leading-none">Oriental Street - OS Rush</h1>
             <span className="text-[10px] font-bold text-green-500 tracking-[0.3em] uppercase ml-1">OS Delivery</span>
           </div>
 
