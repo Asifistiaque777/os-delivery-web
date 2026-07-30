@@ -1,49 +1,54 @@
-name: 🚀 Build & Deploy to Pipra Host
 
+name: 🚀 Build & Deploy to Pipra Host
+ 
 on:
   push:
     branches:
       - main
-
+ 
 jobs:
   web-deploy:
     name: 🎉 Production Build and Deploy
     runs-on: ubuntu-latest
-
+ 
     steps:
       - name: 🚚 Get latest code
         uses: actions/checkout@v4
-
+ 
       - name: 🟢 Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
-
+ 
       - name: 🔑 Make CI .env file
         working-directory: ./osdel-project
         env:
           SECRET_ENV_DATA: ${{ secrets.ENV_FILE }}
         run: |
           echo "$SECRET_ENV_DATA" > .env
-
+ 
       - name: 🏗️ Install & Build
         working-directory: ./osdel-project
         run: |
           npm ci
           npm run build
-
+ 
       - name: 🔐 Setup SSH Key
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p 22 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
-
-      - name: 📂 Upload via SSH tar pipe
+ 
+      - name: 🗑️ Clear old assets on server
+        run: |
+          ssh -i ~/.ssh/deploy_key \
+            -o StrictHostKeyChecking=no \
+            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
+            "rm -rf ~/public_html/assets && echo 'old assets cleared'"
+ 
+      - name: 📂 Upload new build via SSH tar pipe
         run: |
           cd ./osdel-project/dist
           tar czf - . | ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
-            -o ServerAliveInterval=30 \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "cd ~/public_html && tar xzf - --overwrite"
