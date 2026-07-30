@@ -1,4 +1,4 @@
-console.log("DEPLOY TEST v2 ✅");
+
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getAuth } from "firebase/auth"; // Directly check core Firebase
 
