@@ -4,7 +4,7 @@ import { CATEGORIES, SUBCATEGORIES, ADMIN_PASSCODE } from '../utils/constants';
 // ── Upload config ─────────────────────────────────────────────
 // Dev এ localhost:5173 থেকে full URL লাগবে, production এ relative
 const UPLOAD_ENDPOINT = import.meta.env.DEV
-  ? 'https://osdelivery.shop/upload.php'
+  ? 'https://osrush.com/upload.php'
   : '/upload.php';
 
 const UPLOAD_SECRET = 'OSDEL_UPLOAD_2025';
@@ -482,4 +482,4 @@ const AdminPanel = ({
   );
 };
 
-export default AdminPanel;
+export default AdminPanel;   

@@ -18,10 +18,10 @@ export const CATEGORIES = [
     type: 'oriental', 
     description: 'সন্ধ্যা ৬টা থেকে ভোর ৪টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/rat1.png',
-      'https://osdelivery.shop/image/rat2.png',
-      'https://osdelivery.shop/image/rat3.png',
-      'https://osdelivery.shop/image/rat4.png',
+      'https://osrush.com/image/rat1.png',
+      'https://osrush.com/image/rat2.png',
+      'https://osrush.com/image/rat3.png',
+      'https://osrush.com/image/rat4.png',
     ]
   },
   { 
