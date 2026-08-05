@@ -73,7 +73,7 @@ export const useFirebase = setAlert => {
           if (user) {
             setUserId(user.uid);
           } else {
-            // ফিক্স: গুগল লগইনের সময় যাতে জোর করে অ্যানোনিমাস স্টেট ট্রিপ না করে
+            // ফিক্স: গুগল লগইনের সময় যাতে জোর করে অ্যানোনিমাস স্টেট ট্রিপ না করে
             await signInAnonymously(firebaseAuth);
           }
         } catch (err) {
@@ -117,7 +117,17 @@ export const useFirebase = setAlert => {
     const unsubscribeProducts = onSnapshot(
       productsQuery,
       snapshot => {
-        const items = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+        const items = snapshot.docs.map(d => {
+          const data = d.data();
+          return {
+            id: d.id,
+            ...data,
+            // 🎯 ডাইনামিক ডোমেন ফিক্স: osdelivery.shop থাকলে অটো osrush.com বানিয়ে দেবে
+            imageURL: data.imageURL
+              ? data.imageURL.replace(/osdelivery\.shop/g, 'osrush.com')
+              : data.image || '',
+          };
+        });
         setMenuItems(
           items.sort((a, b) => (a.category || '').localeCompare(b.category || ''))
         );
