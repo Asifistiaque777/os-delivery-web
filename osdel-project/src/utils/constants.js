@@ -31,10 +31,10 @@ export const CATEGORIES = [
     type: 'oriental', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/din1.png',
-      'https://osdelivery.shop/image/din2.png',
-      'https://osdelivery.shop/image/din3.png',
-      'https://osdelivery.shop/image/din4.png',
+      'https://osrush.com/image/din1.png',
+      'https://osrush.com/image/din2.png',
+      'https://osrush.com/image/din3.png',
+      'https://osrush.com/image/din4.png',
     ]
   },
   { 
@@ -44,11 +44,11 @@ export const CATEGORIES = [
     type: 'oriental', 
     description: 'দুপুর 12 টা থেকে রাত 11 টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/grocery2.png',
-      'https://osdelivery.shop/image/grocery3.png',
-      'https://osdelivery.shop/image/grocery4.png',
-      'https://osdelivery.shop/image/masala.png',
-      'https://osdelivery.shop/image/Screenshot_1.png',
+      'https://osrush.com/image/grocery2.png',
+      'https://osrush.com/image/grocery3.png',
+      'https://osrush.com/image/grocery4.png',
+      'https://osrush.com/image/masala.png',
+      'https://osrush.com/image/Screenshot_1.png',
     ]
   },
   { 
@@ -58,9 +58,9 @@ export const CATEGORIES = [
     type: 'oriental', 
     description: 'দুপুর ১ টা থেকে ভোর ৪ টা পর্যন্ত',
     images: [
-      'https://osdelivery.shop/image/smoke1.png',
-      'https://osdelivery.shop/image/smoke2.png',
-      'https://osdelivery.shop/image/others3.png',
+      'https://osrush.com/image/smoke1.png',
+      'https://osrush.com/image/smoke2.png',
+      'https://osrush.com/image/others3.png',
     ]
   },
   { 
@@ -70,8 +70,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর 12 টা থেকে রাত 10 টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/teheri_ghor1.png',
-      'https://osdelivery.shop/image/teheri_ghor2.png',
+      'https://osrush.com/image/teheri_ghor1.png',
+      'https://osrush.com/image/teheri_ghor2.png',
     ]
   },
   { 
@@ -81,8 +81,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/abesh1.png',
-      'https://osdelivery.shop/image/abesh2.png',
+      'https://osrush.com/image/abesh1.png',
+      'https://osrush.com/image/abesh2.png',
     ]
   },
   { 
@@ -92,8 +92,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/khanas1.png',
-      'https://osdelivery.shop/image/khanas2.png',
+      'https://osrush.com/image/khanas1.png',
+      'https://osrush.com/image/khanas2.png',
     ]
   },
   { 
@@ -103,8 +103,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/bobos1.png',
-      'https://osdelivery.shop/image/bobos2.png',
+      'https://osrush.com/image/bobos1.png',
+      'https://osrush.com/image/bobos2.png',
     ]
   },
   { 
@@ -114,8 +114,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/cp1.png',
-      'https://osdelivery.shop/image/cp2.png',
+      'https://osrush.com/image/cp1.png',
+      'https://osrush.com/image/cp2.png',
     ]
   },
   { 
@@ -125,8 +125,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/shiraj1.png',
-      'https://osdelivery.shop/image/shiraj2.png',
+      'https://osrush.com/image/shiraj1.png',
+      'https://osrush.com/image/shiraj2.png',
     ]
   },
   { 
@@ -136,8 +136,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/crimson1.png',
-      'https://osdelivery.shop/image/crimson2.png',
+      'https://osrush.com/image/crimson1.png',
+      'https://osrush.com/image/crimson2.png',
     ]
   },
   { 
@@ -147,8 +147,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টাথেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/tasty3.png',
-      'https://osdelivery.shop/image/tasty1.png',
+      'https://osrush.com/image/tasty3.png',
+      'https://osrush.com/image/tasty1.png',
     ]
   },
   { 
@@ -158,9 +158,9 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/arabian1.png',
-      'https://osdelivery.shop/image/arabian2.png',
-      'https://osdelivery.shop/image/arabian3.png',
+      'https://osrush.com/image/arabian1.png',
+      'https://osrush.com/image/arabian2.png',
+      'https://osrush.com/image/arabian3.png',
     ]
   },
   { 
@@ -170,8 +170,8 @@ export const CATEGORIES = [
     type: 'restaurant', 
     description: 'দুপুর ১২ টা থেকে রাত ৯ টা পর্যন্ত।',
     images: [
-      'https://osdelivery.shop/image/teheri_khan1.png',
-      'https://osdelivery.shop/image/teheri_khan2.png',
+      'https://osrush.com/image/teheri_khan1.png',
+      'https://osrush.com/image/teheri_khan2.png',
     ]
   },
   { 
@@ -181,10 +181,10 @@ export const CATEGORIES = [
     type: 'emergency', 
     description: 'দুপুর ১২ টা থেকে ভোর ৪ টা পর্যন্ত',
     images: [
-       'https://osdelivery.shop/image/pharma1.png',
-       'https://osdelivery.shop/image/pharma2.png',
-       'https://osdelivery.shop/image/pharma3.png',
-       'https://osdelivery.shop/image/pharma4.png',
+       'https://osrush.com/image/pharma1.png',
+       'https://osrush.com/image/pharma2.png',
+       'https://osrush.com/image/pharma3.png',
+       'https://osrush.com/image/pharma4.png',
     ]
   }, 
   { 
@@ -194,8 +194,8 @@ export const CATEGORIES = [
     type: 'emergency', 
     description: 'দুপুর ১২ টা থেকে ভোর ৪ টা পর্যন্ত',
     images: [
-      'https://osdelivery.shop/image/sexual1.png',
-      'https://osdelivery.shop/image/sexual2.png',
+      'https://osrush.com/image/sexual1.png',
+      'https://osrush.com/image/sexual2.png',
     ]
   },
 
@@ -207,9 +207,9 @@ export const CATEGORIES = [
     type: 'emergency', 
     description: 'দুপুর ১ টা থেকে ভোর ৪ টা পর্যন্ত',
     images: [
-      'https://osdelivery.shop/image/smoke1.png',
-      'https://osdelivery.shop/image/smoke2.png',
-      'https://osdelivery.shop/image/others3.png',
+      'https://osrush.com/image/smoke1.png',
+      'https://osrush.com/image/smoke2.png',
+      'https://osrush.com/image/others3.png',
     ]
   },
 
@@ -227,6 +227,8 @@ export const SUBCATEGORIES = {
         { name: 'bangla_item', title: 'Bangla Item', icon: '🍽️' },
         { name: 'platter', title: 'Set Menu', icon: '🍱' },
         { name: 'FastFood', title: 'ফাস্ট ফুড', icon: '🍔' },
+        { name: 'Snacks', title: 'Snacks', icon: '🍟' },
+        
         { name: 'Desserts', title: 'ডেজার্ট', icon: '🍰' },
     ],
     Groceries: [
