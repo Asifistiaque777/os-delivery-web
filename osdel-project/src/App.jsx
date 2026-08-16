@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { getAuth } from "firebase/auth"; // Directly check core Firebase
 
@@ -86,19 +85,34 @@ const buildHash = (page, category, subCategory) => {
     MAIN APP
 ══════════════════════════════════════════ */
 const App = () => {
-  const [page, setPage]                 = useState("Home");
-  const [cart, setCart]                 = useState([]);
-  const [showCart, setShowCart]         = useState(false);
-  const [alert, setAlert]               = useState({ message: "", type: "" });
-  const [isAdmin, setIsAdmin]           = useState(false);
-  const [isRider, setIsRider]           = useState(false);
-  const [gradientClass, setGradientClass]             = useState(getGradientClass());
-  const [activeCategory, setActiveCategory]           = useState(CATEGORIES[0]?.name || "");
-  const [activeSubCategory, setActiveSubCategory]     = useState("");
-  const [searchTerm, setSearchTerm]                   = useState("");
+  const [page, setPage]                                 = useState("Home");
+  
+  // ── Cart State with localStorage persistence ──
+  const [cart, setCart]                                 = useState(() => {
+    try {
+      const saved = localStorage.getItem("osrush_cart");
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [showCart, setShowCart]                         = useState(false);
+  const [alert, setAlert]                               = useState({ message: "", type: "" });
+  const [isAdmin, setIsAdmin]                           = useState(false);
+  const [isRider, setIsRider]                           = useState(false);
+  const [gradientClass, setGradientClass]               = useState(getGradientClass());
+  const [activeCategory, setActiveCategory]             = useState(CATEGORIES[0]?.name || "");
+  const [activeSubCategory, setActiveSubCategory]       = useState("");
+  const [searchTerm, setSearchTerm]                     = useState("");
   const [orderSuccessDetails, setOrderSuccessDetails] = useState(null);
-  const [persistedOrder, setPersistedOrder]           = useState(null);
+  const [persistedOrder, setPersistedOrder]             = useState(null);
   const [isTransitioning, setIsTransitioning]         = useState(false);
+
+  // ── Sync Cart Changes with localStorage ──
+  useEffect(() => {
+    localStorage.setItem("osrush_cart", JSON.stringify(cart));
+  }, [cart]);
 
   /* ── hooks ── */
   const {
@@ -165,7 +179,7 @@ const App = () => {
     return () => clearInterval(interval);
   }, []);
 
-  /* ── cart ── */
+  /* ── cart actions ── */
   const addToCart = useCallback((item) => {
     setCart((prev) => {
       const existing = prev.find((i) => i.id === item.id);
@@ -187,8 +201,8 @@ const App = () => {
   const handleSetActiveSubCategory = useCallback((sub) => setActiveSubCategory(sub), []);
 
   /* ══════════════════════════════════════════
-      CONFIRM ORDER — বুলেপ্রুফ লাইভ ফায়ারবেস চেক 🎯
-   ══════════════════════════════════════════ */
+      CONFIRM ORDER — লাইভ ফায়ারবেস চেক 🎯
+    ══════════════════════════════════════════ */
   const handleConfirmOrder = useCallback(() => {
     setShowCart(false);
     
@@ -351,7 +365,6 @@ const App = () => {
             setIsAuthenticated={(status) => {
               setIsRider(status);
               if (!status) {
-                // 🚪 লগআউট মারলে স্টেট রুট লেভেল থেকে ধুয়েমুছে ক্লিন করবে এবং ওল্ড সেশন রিলিজ করবে
                 setIsAdmin(false);
                 window.location.reload(); 
               }
@@ -389,7 +402,6 @@ const App = () => {
         {renderPage()}
       </main>
 
-      {/* ── ফিক্সড: হোয়াটসঅ্যাপ ট্র্যাকিং বাটনটি সরাসরি এই কাউন্টডাউন উইজেটের ভেতরেই অটো-সিঙ্ক হয়ে গেছে ── */}
       <FloatingCountdown 
         orders={orders} 
         userId={authData.user?.uid || anonymousUserId} 
