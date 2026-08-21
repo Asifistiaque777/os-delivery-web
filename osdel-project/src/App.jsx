@@ -12,12 +12,12 @@ import FloatingCountdown from "./components/FloatingCountdown"; // Integrated co
 import HomePage         from "./pages/HomePage";
 import AboutPage        from "./pages/AboutPage";
 import CheckoutPage     from "./pages/CheckoutPage";
-import AdminPanel       from "./pages/AdminPanel";
-import RiderPanel       from "./pages/RiderPanel";
+//   import AdminPanel       from "./pages/AdminPanel";
+//  import RiderPanel       from "./pages/RiderPanel";
 import ItemListPage     from "./pages/ItemListPage";
 import OrderSuccessPage from "./pages/OrderSuccessPage";
 import SubCategoryPage  from "./pages/SubCategoryPage";
-import OrderExport      from "./pages/OrderExport";
+//  import OrderExport      from "./pages/OrderExport";
 import ProfilePage      from "./pages/ProfilePage";
 import LoginPage        from "./pages/LoginPage";
 import SignupPage       from "./pages/SignupPage";
@@ -55,9 +55,9 @@ const parseHash = (hash) => {
   const [pagePart, category, subCategory] = raw.split("/");
   const pageMapping = {
     itemlist: "ItemList", subcategorypage: "SubCategoryPage",
-    adminpanel: "AdminPanel", adminlogin: "AdminLogin",
-    riderpanel: "RiderPanel", riderlogin: "RiderLogin",
-    ordersuccess: "OrderSuccess", export: "export",
+//  adminpanel: "AdminPanel", adminlogin: "AdminLogin",
+//    riderpanel: "RiderPanel", riderlogin: "RiderLogin",
+    ordersuccess: "OrderSuccess",                            // export: "export",
     about: "About", home: "Home", checkout: "Checkout",
     profile: "Profile", login: "Login",
     register: "Register",
@@ -99,8 +99,8 @@ const App = () => {
 
   const [showCart, setShowCart]                         = useState(false);
   const [alert, setAlert]                               = useState({ message: "", type: "" });
-  const [isAdmin, setIsAdmin]                           = useState(false);
-  const [isRider, setIsRider]                           = useState(false);
+  //  const [isAdmin, setIsAdmin]                           = useState(false);
+  //  const [isRider, setIsRider]                           = useState(false);
   const [gradientClass, setGradientClass]               = useState(getGradientClass());
   const [activeCategory, setActiveCategory]             = useState(CATEGORIES[0]?.name || "");
   const [activeSubCategory, setActiveSubCategory]       = useState("");
@@ -117,7 +117,7 @@ const App = () => {
   /* ── hooks ── */
   const {
     userId: anonymousUserId, loading, menuItems, orders,
-    addProduct, deleteProduct, updateStockStatus, updateOrderStatus,
+    addProduct, deleteProduct, updateStockStatus, // updateOrderStatus,
     updateProductPrice, updateProductDiscount,
     updateProductDescription, updateProductRecommendation,
     placeOrder,
@@ -331,7 +331,8 @@ const App = () => {
       case "Profile":
         return <ProfilePage useAuthData={authData} setPage={changePage} />;
 
-      case "AdminLogin":
+
+ /*     case "AdminLogin":
       case "AdminPanel":
         return (
           <AdminPanel
@@ -349,6 +350,8 @@ const App = () => {
             setIsAuthenticated={setIsAdmin}
           />
         );
+
+
 
       case "export":
         return <OrderExport orders={orders} loading={loading} setPage={changePage} />;
@@ -371,6 +374,8 @@ const App = () => {
             }}
           />
         );
+
+*/
 
       default:
         return (
