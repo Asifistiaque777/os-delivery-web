@@ -23,7 +23,7 @@ const generateLiveWhatsAppLink = (order) => {
 const FloatingCountdown = ({ orders, userId, page }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [timeTriggers, setTimeTriggers] = useState({});
-  const constraintsRef = useRef(null); // ড্রাগিং বাউন্ডারি ট্র্যাক করার জন্য
+  const constraintsRef = useRef(null);
 
   // ── 🔒 ফিল্টার: কাস্টমারের একটিভ অর্ডারসমূহ ──
   const activeOrders = useMemo(() => {
@@ -78,21 +78,21 @@ const FloatingCountdown = ({ orders, userId, page }) => {
   return (
     <>
       {/* ── Invisible Fullscreen Container for Drag Boundaries ── */}
-      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[9999]" />
+      <div ref={constraintsRef} className="fixed inset-0 pointer-events-none z-[999990]" />
 
-      {/* ── 🟢 ১০০% মুভেবল/ড্রাগেবল মেগা গ্লোয়িং ট্র্যাক বাটন ── */}
+      {/* ── 🟢 ১০০% মুভেবল/ড্রাগেবল লাইভ ট্র্যাক বাটন (সবকিছুর ওপরে থাকবে) ── */}
       <motion.div
         drag
-        dragConstraints={constraintsRef} // বাটন স্ক্রিনের বাইরে যাবে না
-        dragElastic={0.1} // টানার সময় প্রিমিয়াম স্প্রিং ফিল দিবে
-        dragMomentum={false} // ড্রাগ ছেড়ে দিলে স্লাইডিং অফ থাকবে, যেখানে ছাড়বে সেখানেই থাকবে
+        dragConstraints={constraintsRef}
+        dragElastic={0.1}
+        dragMomentum={false}
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95, cursor: 'grabbing' }}
-        className="fixed bottom-6 left-6 pointer-events-auto cursor-grab"
+        className="fixed bottom-6 left-6 pointer-events-auto cursor-grab z-[999995]"
       >
         <button
           onClick={() => setIsOpen(true)}
-          className="h-14 px-5 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white rounded-full flex items-center gap-3 shadow-[0_15px_40px_rgba(34,197,94,0.35)] relative border border-green-500 overflow-hidden group select-none"
+          className="h-14 px-5 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 text-white rounded-full flex items-center gap-3 shadow-[0_15px_40px_rgba(34,197,94,0.45)] relative border-2 border-green-500 overflow-hidden group select-none"
         >
           {/* ব্যাকগ্রাউন্ড লাইভ নিয়ন গ্লো এনিমেশন */}
           <span className="absolute inset-0 w-full h-full bg-gradient-to-r from-green-500/10 via-transparent to-green-500/10 opacity-50 group-hover:opacity-100 transition-opacity pointer-events-none" />
@@ -128,7 +128,7 @@ const FloatingCountdown = ({ orders, userId, page }) => {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 bg-black/75 backdrop-blur-md z-[10000]"
+              className="fixed inset-0 bg-black/80 backdrop-blur-md z-[999998]"
             />
 
             {/* ড্রয়ার কন্টেইনার */}
@@ -137,7 +137,7 @@ const FloatingCountdown = ({ orders, userId, page }) => {
               animate={{ y: 0 }}
               exit={{ y: '100%' }}
               transition={{ type: 'spring', damping: 26, stiffness: 200 }}
-              className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-slate-950 border-t-4 border-green-500 rounded-t-[36px] shadow-[0_-15px_50px_rgba(0,0,0,0.8)] p-6 z-[10001] text-white font-sans max-h-[82vh] flex flex-col"
+              className="fixed bottom-0 left-0 right-0 max-w-md mx-auto bg-slate-950 border-t-4 border-green-500 rounded-t-[36px] shadow-[0_-15px_50px_rgba(0,0,0,0.9)] p-6 z-[999999] text-white font-sans max-h-[82vh] flex flex-col"
             >
               {/* ড্রয়ার হেডার */}
               <div className="flex justify-between items-center pb-5 border-b border-slate-900 shrink-0">
