@@ -3,19 +3,19 @@
   "name": "OS Rush Delivery Platform",
   "icons": [
     {
-      "src": "/icon-192.png",
+      "src": "/osdel_favicon.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "/icon-512.png",
+      "src": "/osdel_favicon.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "start_url": "/",
-  "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "background_color": "#ffffff",
+  "theme_color": "#00b074",
   "display": "standalone",
-  "orientation": "portrait"
+  "scope": "/"
 }
