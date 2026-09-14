@@ -8,25 +8,57 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
+  // 📲 PWA Install Prompt State
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+
   const { user, logout } = useAuthData;
+
+  /* ── 📲 PWA বাটন হ্যান্ডলার ও ইভেন্ট লিসেনার ── */
+  useEffect(() => {
+    const handleBeforeInstallPrompt = (e) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+
+    window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+    window.addEventListener('appinstalled', () => {
+      setDeferredPrompt(null);
+    });
+
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+    };
+  }, []);
+
+  const handleInstallClick = async () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        setDeferredPrompt(null);
+      }
+    } else {
+      alert("অ্যাপটি ইনস্টল করতে ব্রাউজারের ওপরের থ্রি-ডট (⋮) মেনুতে চাপ দিয়ে 'Install app' অথবা 'Add to Home Screen' সিলেক্ট করুন।");
+    }
+  };
 
   /* ── 🔄 পপ-আপ চিরতরে আটকানোর এবং রাইডার বাস্টার লজিক (রাইডার পেজ এক্সেপশন ফিক্সড 🎯) ── */
   useEffect(() => {
     if (user) {
-      // 🚨 ফিক্স: ইউজার যদি অলরেডি রাইডার প্যানেল বা রাইডার লগইন ইউআরএলে থাকে, তবে তাকে কিকআউট করা যাবে না
       const isAtRiderPage = window.location.hash.toLowerCase().includes('rider');
 
       if (user.email && user.email.toLowerCase().endsWith('@osrider.com')) {
         if (!isAtRiderPage) {
           const auth = getAuth();
-          signOut(auth); // রাইডারকে কাস্টমার সেশন থেকে লাথি মেরে বের করা হলো
+          signOut(auth);
           alert('রাইডাররা কাস্টমার প্যানেলে প্রবেশ করতে পারবেন না। দয়া করে রাইডার ড্যাশবোর্ড ব্যবহার করুন।');
           setShowAuthModal(false);
           return;
         }
       }
       
-      setShowAuthModal(false); // সাধারণ ইউজার হলে পপ-আপ ভ্যানিশ হবে
+      setShowAuthModal(false);
     }
   }, [user]);
 
@@ -56,7 +88,7 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
 
   // Profile icon — logged in হলে initial, না হলে icon
   const ProfileButton = () => {
-    if (user && !user.email?.toLowerCase().endsWith('@osrider.com')) { // রাইডার যেন প্রোফাইল বাটন না পায় তার চেক
+    if (user && !user.email?.toLowerCase().endsWith('@osrider.com')) {
       const initial = (user.displayName || user.email || '?').charAt(0).toUpperCase();
       return (
         <button
@@ -96,6 +128,44 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
+            {/* 📲 PREMIUM MODERN INSTALL APP BUTTON */}
+            <motion.button
+              whileHover={{ y: -1, scale: 1.02 }}
+              whileTap={{ scale: 0.96 }}
+              onClick={handleInstallClick}
+              className="group relative flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-sm hover:border-emerald-500/50 hover:shadow-md hover:shadow-emerald-500/10 transition-all cursor-pointer"
+              title="Install OS Rush App"
+            >
+              {/* নিয়ন গ্রিন আইকন ব্যাজ */}
+              <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-slate-950 shadow-inner">
+                <motion.svg
+                  animate={{ y: [0, -1.5, 0] }}
+                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                  className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                  />
+                </motion.svg>
+              </div>
+
+              {/* টেক্সট ও লাইভ পালস ডট */}
+              <div className="flex items-center gap-1.5 whitespace-nowrap">
+                <span className="text-[11px] font-black uppercase tracking-wider text-slate-200 group-hover:text-white transition-colors">
+                  Install App
+                </span>
+                <span className="relative flex h-1.5 w-1.5 ml-0.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                </span>
+              </div>
+            </motion.button>
+
             <button
               onClick={() => setIsDrawerOpen(true)}
               className="px-4 py-2.5 rounded-2xl bg-gray-900 text-white text-[11px] font-black uppercase tracking-widest hover:bg-green-600 transition-all flex items-center gap-2"

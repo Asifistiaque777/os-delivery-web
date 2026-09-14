@@ -5,6 +5,14 @@
     <link rel="icon" type="image/png" href="/osdel_favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- 📱 PWA Meta Tags & Manifest -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#0f172a" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="OS Rush" />
+    <link rel="apple-touch-icon" href="/osdel_favicon.png" />
+
     <!-- 📊 Google Analytics Tag (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0QT0GT9C1B"></script>
     <script>
@@ -19,8 +27,7 @@
     <meta name="google-site-verification" content="zSznxmPU1SgbrAG72K4aRxK..." />
 
     <!-- 🔍 Basic SEO Meta Tags -->
-    <title>OS Rush | Online Food, Medicine & Essential Delivery Service</title> 
-    <title>OS Rush ✅ DEPLOY TEST</title>
+    <title>OS Rush | Online Food, Medicine & Essential Delivery Service</title>
     <meta name="description" content="Order fresh food, daily groceries & essential medicine online with super-fast delivery from OS Rush." />
     <meta name="keywords" content="food delivery, late night food, grocery delivery, medicine delivery, OS Rush, OSDelivery" />
 
@@ -35,6 +42,17 @@
 
     <!-- 🧪 DEPLOYMENT TEST FLAG -->
     <div id="deploy-test" style="display:none;">DEPLOY_VERSION_TEST_101</div>
+
+    <!-- ⚙️ Service Worker Registration for PWA -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js')
+            .then((reg) => console.log('Service Worker Registered:', reg.scope))
+            .catch((err) => console.error('Service Worker Registration Failed:', err));
+        });
+      }
+    </script>
 
     <script type="module" src="/src/main.jsx"></script>
   </body>
