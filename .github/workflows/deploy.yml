@@ -39,23 +39,16 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           ssh-keyscan -p 22 ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts 2>/dev/null
 
-      - name: 🗑️ Clear old files on server
+      - name: 🗑️ Clear old build files on server
         run: |
           ssh -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }} \
-            "rm -f ~/public_html/index.html && rm -rf ~/public_html/assets && echo 'cleared'"
+            "rm -f ~/public_html/index.html ~/public_html/manifest.json ~/public_html/sw.js && rm -rf ~/public_html/assets && echo 'cleared'"
 
-      - name: 📤 Upload index.html
-        run: |
-          scp -i ~/.ssh/deploy_key \
-            -o StrictHostKeyChecking=no \
-            ./osdel-project/dist/index.html \
-            ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/public_html/index.html
-
-      - name: 📤 Upload assets folder
+      - name: 📤 Upload all build files (including manifest, sw, icons)
         run: |
           scp -r -i ~/.ssh/deploy_key \
             -o StrictHostKeyChecking=no \
-            ./osdel-project/dist/assets \
+            ./osdel-project/dist/* \
             ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}:~/public_html/
