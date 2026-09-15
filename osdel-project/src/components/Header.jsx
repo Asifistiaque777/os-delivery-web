@@ -8,13 +8,36 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [showAuthModal, setShowAuthModal] = useState(false);
 
-  // 📲 PWA Install Prompt State
+  // 📲 PWA Install Prompt States
   const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [isInstalled, setIsInstalled] = useState(false);
 
   const { user, logout } = useAuthData;
 
-  /* ── 📲 PWA বাটন হ্যান্ডলার ও ইভেন্ট লিসেনার ── */
+  /* ── 📲 PWA বাটন হ্যান্ডলার ও স্ট্যান্ডঅ্যালোন চেক ── */
   useEffect(() => {
+    // ১. অ্যাপটি অলরেডি ইনস্টল করা অবস্থায় ওপেন হয়েছে কিনা তা চেক
+    const checkStandalone = () => {
+      const isStandaloneMode = 
+        window.matchMedia('(display-mode: standalone)').matches || 
+        window.navigator.standalone === true || 
+        document.referrer.includes('android-app://');
+
+      if (isStandaloneMode) {
+        setIsInstalled(true);
+      }
+    };
+
+    checkStandalone();
+
+    // ডিসপ্লে মোড রানটাইমে পরিবর্তন হলে লিসেন করা
+    const matchDisplay = window.matchMedia('(display-mode: standalone)');
+    const handleDisplayChange = (evt) => {
+      if (evt.matches) setIsInstalled(true);
+    };
+    matchDisplay.addEventListener('change', handleDisplayChange);
+
+    // ২. ব্রাউজারে ইনস্টল ইভেন্ট ধরা
     const handleBeforeInstallPrompt = (e) => {
       e.preventDefault();
       setDeferredPrompt(e);
@@ -22,11 +45,14 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
 
     window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
 
+    // সফলভাবে ইনস্টল হয়ে গেলে বাটন ভ্যানিশ
     window.addEventListener('appinstalled', () => {
+      setIsInstalled(true);
       setDeferredPrompt(null);
     });
 
     return () => {
+      matchDisplay.removeEventListener('change', handleDisplayChange);
       window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
     };
   }, []);
@@ -36,10 +62,11 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
+        setIsInstalled(true);
         setDeferredPrompt(null);
       }
     } else {
-      alert("অ্যাপটি ইনস্টল করতে ব্রাউজারের ওপরের থ্রি-ডট (⋮) মেনুতে চাপ দিয়ে 'Install app' অথবা 'Add to Home Screen' সিলেক্ট করুন।");
+      alert("অ্যাপটি ইনস্টল করতে ব্রাউজারের ওপরের থ্রি-ডট (⋮) মেনুতে চাপ দিয়ে 'Install app' অথবা 'Add to Home Screen' সিলেক্ট করুন।");
     }
   };
 
@@ -128,43 +155,45 @@ const Header = ({ setPage, setActiveCategory, setActiveSubCategory, useAuthData 
           </div>
 
           <div className="flex items-center gap-2 md:gap-3">
-            {/* 📲 PREMIUM MODERN INSTALL APP BUTTON */}
-            <motion.button
-              whileHover={{ y: -1, scale: 1.02 }}
-              whileTap={{ scale: 0.96 }}
-              onClick={handleInstallClick}
-              className="group relative flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-sm hover:border-emerald-500/50 hover:shadow-md hover:shadow-emerald-500/10 transition-all cursor-pointer"
-              title="Install OS Rush App"
-            >
-              {/* নিয়ন গ্রিন আইকন ব্যাজ */}
-              <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-slate-950 shadow-inner">
-                <motion.svg
-                  animate={{ y: [0, -1.5, 0] }}
-                  transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
-                  className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-                  />
-                </motion.svg>
-              </div>
+            {/* 📲 PREMIUM MODERN INSTALL APP BUTTON (অ্যাপ ইনস্টল থাকলে দেখাবে না) */}
+            {!isInstalled && (
+              <motion.button
+                whileHover={{ y: -1, scale: 1.02 }}
+                whileTap={{ scale: 0.96 }}
+                onClick={handleInstallClick}
+                className="group relative flex items-center gap-2 pl-2 pr-3.5 py-1.5 rounded-2xl bg-slate-900 border border-slate-800 text-white shadow-sm hover:border-emerald-500/50 hover:shadow-md hover:shadow-emerald-500/10 transition-all cursor-pointer"
+                title="Install OS Rush App"
+              >
+                {/* নিয়ন গ্রিন আইকন ব্যাজ */}
+                <div className="w-7 h-7 rounded-xl bg-gradient-to-tr from-emerald-500 to-green-400 flex items-center justify-center text-slate-950 shadow-inner">
+                  <motion.svg
+                    animate={{ y: [0, -1.5, 0] }}
+                    transition={{ repeat: Infinity, duration: 1.5, ease: "easeInOut" }}
+                    className="w-3.5 h-3.5 text-slate-950 stroke-[2.5]"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
+                    />
+                  </motion.svg>
+                </div>
 
-              {/* টেক্সট ও লাইভ পালস ডট */}
-              <div className="flex items-center gap-1.5 whitespace-nowrap">
-                <span className="text-[11px] font-black uppercase tracking-wider text-slate-200 group-hover:text-white transition-colors">
-                  Install App
-                </span>
-                <span className="relative flex h-1.5 w-1.5 ml-0.5">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
-                </span>
-              </div>
-            </motion.button>
+                {/* টেক্সট ও লাইভ পালস ডট */}
+                <div className="flex items-center gap-1.5 whitespace-nowrap">
+                  <span className="text-[11px] font-black uppercase tracking-wider text-slate-200 group-hover:text-white transition-colors">
+                    Install App
+                  </span>
+                  <span className="relative flex h-1.5 w-1.5 ml-0.5">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-500"></span>
+                  </span>
+                </div>
+              </motion.button>
+            )}
 
             <button
               onClick={() => setIsDrawerOpen(true)}
